@@ -88,10 +88,7 @@ int gladLoad()
     }
 }
 
-void createMesh()
-{
-    int michel = 2;
-}
+
 
 int main()
 {
@@ -102,23 +99,21 @@ int main()
     gladLoad();
 
     Shader ourShader("shader.vs", "shader.fs"); // you can name your shader files however you like
-    createMesh();
+ 
     
-    // ------------------------------
-        // Voilà les position de nos vertex 
     float vertices[] = {
-        //  Position ----------  COLOR -----------
+             //  Position ----------  COLOR -----------
              0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,// top right
              0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,// bottom right
             -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,// bottom left
             -0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 1.0f,// top left 
     };
 
+
     // Les indices vont dire comment dessiner nos triangles.
     // pour faire un rectangle il faut reprendre les vertex precédent.
     // au lieux de refaire plusieurs fois les meme vertex, on indique
     // quels triangles dessiner 
-
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 2,  // first Triangle
         2, 3, 0,   // second Triangle

@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="..\00_M_OpenGl_start\m_start.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="m_start.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\00_M_OpenGl_start\shader_s.h" />

@@ -1,0 +1,5 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (00_M_start.vcxproj.vcxproj, M_OpenGl_project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  helloTriangle.cpp
+C:\Users\matth\OneDrive\Bureau\Projet\OpenGl\M_OpenGl_project\02_M_HelloTriangle\helloTriangle.cpp(123,39): error C2664: 'float *vertices_array(float)' : impossible de convertir l'argument 1 de 'float [10]' en 'float'
+C:\Users\matth\OneDrive\Bureau\Projet\OpenGl\M_OpenGl_project\02_M_HelloTriangle\helloTriangle.cpp(123,38): message : Aucun contexte dans lequel cette conversion est possible
+C:\Users\matth\OneDrive\Bureau\Projet\OpenGl\M_OpenGl_project\02_M_HelloTriangle\helloTriangle.cpp(96,9): message : voir la déclaration de 'vertices_array'
