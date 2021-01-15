@@ -191,25 +191,27 @@ int main()
 
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 2,  // first Triangle
-        2, 3, 0,   // second Triangle
+        2, 3, 0   // second Triangle
     };
     unsigned int VBO, VAO, EBO;
 
     //Vertex array object
     // Va gerer les vertex dans le VBO
+    // Attache le tableau de vertex en premier puis, attache et parramettre les vertex buffers
+    //
     // bind the Vertex Array Object first, then bind and set vertex buffer(s)
     //and then configure vertex attributes(s).
     glGenVertexArrays(1, &VAO);
 
     // vertex buffer objects
-    // Va stocker les vertex dans le tapon
+    // Va stocker les vertex dans le tanpon
     glGenBuffers(1, &VBO);
 
     // element buffer objects
     // Ce qui va lier nos vertex en index
     glGenBuffers(1, &EBO);
 
-    // 1. bind Vertex Array Object
+    // 1. Attache Vertex Array Object
     glBindVertexArray(VAO);
     // 2. copy our vertices array in a buffer for OpenGL to use
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -238,11 +240,13 @@ int main()
 
     // ------ BONUS ------------
     // Debug view --------------------
-    // Vertex point
-    // glEnable(GL_PROGRAM_POINT_SIZE); // Active vertex size 
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); // Active vertex point view
-    // Wireframe mode 
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // Vertex point---
+    //glEnable(GL_PROGRAM_POINT_SIZE); // Active vertex size 
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); // Active vertex point view
+
+
+    // Wireframe mode ---
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
     // --------------------------------------------------------------
@@ -251,7 +255,7 @@ int main()
     //
     // --------------------------------------------------------------
 
-    // Affiche des images en continu dans la fenetre tant que la variable glfw est false
+    // Affiche des images en continu dans la fenetre tant que la variable glfwWindowShouldClose close est false
     while (!glfwWindowShouldClose(window))
     {
         // input ---------------------------------------

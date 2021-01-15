@@ -1,15 +1,23 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+// -----------------------------------
+//  HEADER OPENGL
+// -----------------------------------
+
+// Lib de base c++ pour faire ecrire dans la console ou avoir des variable string a partir de char
 #include <iostream>
 #include <string>
+
+
+// Va remplir toutes les adresses de OpenGl et GlfW (peut etre)
+#include <glad/glad.h>
+// Gestions de fenetres, de peripheriques pour opengl
+#include <GLFW/glfw3.h>
+
+// Permet de lire les image .png , .jpg , ...
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+// Classe pour compiler des shader et le lier à openGl
 #include "shader_s.h"
-
-
-// FUNC
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
 
 
 // VAR
@@ -19,6 +27,9 @@ const char* WINDOW_TITLE = "LearnOpenGL";
 
 float mixValue = 0.2f;
 
+//--------------------------------
+// OUR GEOMETRY 
+//--------------------------------
 
 float vertices[] = {
     // positions          // colors           // texture coords
@@ -39,19 +50,52 @@ float texCoords[] = {
     0.5f, 1.0f   // top-center corner
 };
 
+//--------------------------------
+
+
+
+/**
+* Retourne les inputs qui sont préssés ou relachés
+*/
+void processInput(GLFWwindow* window)
+{
+
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        mixValue += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+        if (mixValue >= 1.0f)
+            mixValue = 1.0f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        mixValue -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+        if (mixValue <= 0.0f)
+            mixValue = 0.0f;
+    }
+}
+
+/**
+* Retourne la taille de la fenetre opengl, donc le nombres de pixel à afficher
+*/
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
 
 
 void setWindowHint()
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 }
 
 int createWindow(GLFWwindow* window)
 {
-     if (window == NULL)
+    if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -59,9 +103,11 @@ int createWindow(GLFWwindow* window)
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
 }
 
+/**
+* Va remplir les adresses des fonctions de GLFW et OPENGL pour les utiliser
+*/
 int gladLoad()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -89,20 +135,13 @@ unsigned char* LoadGlTexture(const char* file, int width, int height, int nrChan
 }
 
 
-int main()
+/**
+* Ici je créé ma geometrie.
+* Elle est répartie dans plusieurs Conteneurs differents:
+* Vertex buffer object| Vertex array object | Element buffer object
+*/
+void createGeo(unsigned int& VBO, unsigned int& VAO, unsigned int& EBO)
 {
-
-    glfwInit(); // initialisation de la bibliotheque glfw
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, WINDOW_TITLE, NULL, NULL);
-    createWindow(window);
-    gladLoad();
-
-    Shader ourShader("shader.vs", "shader.fs"); // you can name your shader files however you like
-
-   
-
-    unsigned int VBO, VAO, EBO;
-
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -125,10 +164,12 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+}
 
+void loadTextureExemple(unsigned int& texture1, unsigned int& texture2)
+{
     // load and create a texture 
-    // -------------------------
-    unsigned int texture1, texture2;;
+   // -------------------------
     glGenTextures(1, &texture1);
     glBindTexture(GL_TEXTURE_2D, texture1); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
     // set the texture wrapping parameters
@@ -175,7 +216,33 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-    
+
+}
+
+/**
+* La fonction d'entree de notre programme openGL
+*/
+int main()
+{
+
+    glfwInit(); // initialisation de la bibliotheque glfw
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, WINDOW_TITLE, NULL, NULL);
+    createWindow(window);
+    gladLoad();
+
+
+    //Mon shader compilé
+    Shader ourShader("shader.vs", "shader.fs"); // you can name your shader files however you like
+
+    // Ma geometrie
+    unsigned int VBO, VAO, EBO;
+    createGeo(VBO, VAO, EBO);
+
+    // Mes textures
+    unsigned int texture1, texture2;
+    loadTextureExemple(texture1, texture2);
+
+    // Mon shader va uiliser la texture
     ourShader.use();
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     // or set it via the texture class
@@ -207,36 +274,6 @@ int main()
 
     glfwTerminate();
     return 0;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
-   
-}
 
-
-
-
-void processInput(GLFWwindow* window)
-{
-
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        mixValue += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-        if (mixValue >= 1.0f)
-            mixValue = 1.0f;
-    }
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        mixValue -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-        if (mixValue <= 0.0f)
-            mixValue = 0.0f;
-    }
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
 }

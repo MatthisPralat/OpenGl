@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="04_M_textures.cpp" />
+    <ClCompile Include="05_M_Transformation.cpp" />
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -37,7 +37,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{EB716D39-21AC-4AC7-B3DC-88373D397488}</ProjectGuid>
+    <ProjectGuid>{3352CE93-1B44-452A-972A-33B04C931660}</ProjectGuid>
     <RootNamespace>MOpenGlproject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>

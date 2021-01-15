@@ -144,7 +144,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\00_M_OpenGl_start\m_start.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="m_start.cpp" />
   </ItemGroup>
